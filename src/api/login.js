@@ -4,9 +4,9 @@ export function login(username, password) {
   return request({
     url: '/LoginController/login',
     method: 'post',
-    data: {
-      username,
-      password
+    params: {
+      'username' : username,
+      'password' : password
     }
   })
 }
