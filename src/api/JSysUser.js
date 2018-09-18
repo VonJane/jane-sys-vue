@@ -1,12 +1,13 @@
 import request from '@/utils/request'
 
-export function login() {
+export function getUserPages(data) {
+  debugger
   return request({
-    url: 'localhost:8080/springboot-mybatis/UserController/getUserPages',
+    url: '/UserController/getUserPages',
     method: 'post',
-    data: {
-      username,
-      password
+    params: {
+      "pageNum":data.pageNum,
+      "pageSize":data.pageSize
     }
   })
 }

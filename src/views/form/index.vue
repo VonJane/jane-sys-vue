@@ -1,4 +1,5 @@
 <template>
+  <div class="app-container">
   <section>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="formData">
@@ -98,9 +99,11 @@
       </div>
     </el-dialog>
   </section>
+  </div>
 </template>
 
 <script>
+import {getUserPages} from '@/api/JSysUser'
 export default {
   data () {
     return {
@@ -209,9 +212,10 @@ export default {
       this.queryData.pageNum = this.pagination.pageNum
       this.queryData.pageSize = this.pagination.pageSize
       debugger
-      this.$http.post(this.API.getUserPages, this.queryData).then(response => {
-        this.queryResult = response.data.data.pag
-        this.pagination.total = parseInt(response.data.data.total)
+      getUserPages(this.queryData).then(response => {
+        debugger
+        this.queryResult = response.data.pag
+        this.pagination.total = parseInt(response.data.total)
         this.listLoading = false
       }).catch((response) => {
         console.error(response)
@@ -313,5 +317,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
+  textarea {
+    font-family: Arial;
+  }
+  toolbar
+  {padding:.1em .8em 0 .8em!important;font-size:1em!important;position:static!important;width:auto!important}
 </style>
