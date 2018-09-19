@@ -11,3 +11,12 @@ export function getUserPages(data) {
     }
   })
 }
+
+export function setUser(data) {
+  debugger
+  return request({
+    url: '/UserController/insertJSysUser',
+    method: 'post',
+    params: { "jSysUser":data }
+  })
+}

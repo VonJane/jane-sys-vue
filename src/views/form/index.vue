@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import {getUserPages} from '@/api/JSysUser'
+import {getUserPages,setUser} from '@/api/JSysUser'
 export default {
   data () {
     return {
@@ -272,7 +272,8 @@ export default {
             jUserAge: _data.jUserAge,
             jValidaStatus: _data.jValidaStatus
           }
-          this.$http.post(_url, param).then((response) => {
+          setUser(param).then((response) => {
+            debugger
             let result = response.data.data
             if (result > 0) {
               this.addEditSubmitLoading = false
