@@ -62,12 +62,21 @@ export const constantRouterMap = [
   {
     path: '/form',
     component: Layout,
+    meta: {
+      title: '文章管理',
+      icon: 'form'
+    },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'create',
+        name: '创建文章',
+        component: () => import('@/views/article/create'),
+        meta: {title:'创建文章',icon:'form'  }
+      },{
+        path: 'list',
+        name: '文章列表',
+        component: () => import('@/views/article/list'),
+        meta: {title:'文章列表',icon:'form'  }
       }
     ]
   },
@@ -86,41 +95,7 @@ export const constantRouterMap = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'menu1-3' }
-          }
-        ]
+        meta: { title: 'menu1' }
       },
       {
         path: 'menu2',

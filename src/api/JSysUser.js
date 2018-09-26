@@ -17,6 +17,15 @@ export function setUser(data) {
   return request({
     url: '/UserController/insertJSysUser',
     method: 'post',
-    params: { "jSysUser":data }
+    params:  data
+  })
+}
+
+export function updateUser(data) {
+  debugger
+  return request({
+    url: '/UserController/updateJSysUser',
+    method: 'post',
+    params:  data.params
   })
 }
