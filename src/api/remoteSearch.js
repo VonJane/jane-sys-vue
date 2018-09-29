@@ -2,8 +2,8 @@ import request from '@/utils/request'
 
 export function userSearch(name) {
   return request({
-    url: '/search/user',
+    url: '/UserController/getJSysUser',
     method: 'get',
-    params: { name }
+    params: { "jUserName":name }
   })
 }

@@ -13,9 +13,6 @@
 
       <div class="createPost-main-container">
         <el-row>
-
-
-
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
@@ -27,15 +24,15 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable remote placeholder="搜索用户">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item"/>
+                    <el-select v-model="postForm.createBy" :remote-method="getRemoteUserList" filterable remote placeholder="搜索用户">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item.jUserName" :value="item.jId"/>
                     </el-select>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="10">
                   <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"/>
+                    <el-date-picker v-model="postForm.display_time" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"/>
                   </el-form-item>
                 </el-col>
 
@@ -79,7 +76,7 @@ import Upload from '@/components/Upload/singleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
+import { fetchArticle,createArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
@@ -94,7 +91,7 @@ const defaultForm = {
   display_time: undefined, // 前台展示时间
   id: undefined,
   platforms: ['a-platform'],
-  comment_disabled: false,
+  comment_disabled: 1,
   importance: 0
 }
 
@@ -171,19 +168,38 @@ export default {
       })
     },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
+      // this.postForm.display_time = parseInt(this.display_time / 1000)
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
+          let _data = this.postForm
+          let param = {
+            articleTitle : _data.title,
+            articleContentShort:_data.content_short,
+            articleContent:_data.content,
+            articleSourceUri:_data.source_uri,
+            hascomment:_data.comment_disabled,
+            importance:_data.importance,
+            createBy:_data.createBy,
+            createDate:_data.display_time
+          }
+          debugger
+          createArticle(param).then(response => {
+            this.$notify({
+              title: '成功',
+              message: '发布文章成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.postForm.status = 'published'
+            this.loading = false
+          }).catch((response) => {
+            console.error(response)
+             this.loading = false
+            this.$message.error('操作失败')
           })
-          this.postForm.status = 'published'
-          this.loading = false
+
         } else {
           console.log('error submit!!')
           return false
@@ -207,9 +223,12 @@ export default {
       this.postForm.status = 'draft'
     },
     getRemoteUserList(query) {
+      debugger
       userSearch(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
+        debugger
+        if (!response.success) return
+        this.userListOptions = response.data
+        // this.userListOptions = response.data.map(v => v.name)
       })
     }
   }
