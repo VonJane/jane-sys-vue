@@ -55,6 +55,12 @@ export const constantRouterMap = [
         name: 'Tree',
         component: () => import('@/views/tree/index'),
         meta: { title: '菜单管理', icon: 'tree' }
+      },
+      {
+        path: 'dataDic',
+        name: 'Dic',
+        component: () => import('@/views/dataDic/index'),
+        meta: { title: '字典管理', icon: 'dic' }
       }
     ]
   },
