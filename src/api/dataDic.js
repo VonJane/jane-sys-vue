@@ -7,3 +7,20 @@ export function queryList(query) {
     params: query
   })
 }
+
+export function queryKeyList(query) {
+  debugger
+  return request({
+    url: '/DataDicController/getKeyDicPage',
+    method: 'post',
+    params: query
+  })
+}
+
+export function insertDataDic(data) {
+  return request({
+    url: '/DataDicController/insertDataDic',
+    method: 'post',
+    params: data
+  })
+}

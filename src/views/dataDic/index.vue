@@ -50,14 +50,14 @@
         <el-col :span="14">
           <el-card class="box-card">
             <div slot="header">
-              <span class="fdictext">{{ fDicKeyTitle }}</span>
+              <span class="fdictext">{{ dicKeyTitle }}</span>
             </div>
             <div class="text item">
               <el-table v-loading="listKeyLoading" :data="queryKeyResult" border highlight-current-row style="width: 100%">
-                <el-table-column prop="fDicKey" label="代码值" width="80"/>
-                <el-table-column prop="fDicValue" label="代码名" min-width="80"/>
-                <el-table-column prop="fDicIndex" label="排序" min-width="50"/>
-                <el-table-column prop="fDicRemark" label="备注" min-width="100"/>
+                <el-table-column prop="dicKey" label="代码值" width="80"/>
+                <el-table-column prop="dicValue" label="代码名" min-width="80"/>
+                <el-table-column prop="dicIndex" label="排序" min-width="50"/>
+                <el-table-column prop="dicRemark" label="备注" min-width="100"/>
                 <el-table-column label="操作" fixed="right" width="230">
                   <template slot-scope="scope">
                     <el-button v-if="scope.row.fValidaStatus===0" size="small" @click="setfValidaStatus(scope.row,'1')">启用</el-button>
@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { queryList } from '@/api/dataDic'
+import { queryList,queryKeyList,insertDataDic } from '@/api/dataDic'
 export default {
   name: 'SystemManageDicInfo',
   data() {
@@ -240,8 +240,8 @@ export default {
     addKeyEditTitle() {
       return '编辑代码值'
     },
-    fDicKeyTitle() {
-      return this.fDicKeyname + ' 码表数据'
+    dicKeyTitle() {
+      return this.dicKeyname + ' 码表数据'
     }
   },
   mounted() {
@@ -296,12 +296,13 @@ export default {
       _row.getKeyLoading = true
       this.queryKeyData.pageNum = this.pagination.pageKeyNum
       this.queryKeyData.pageSize = this.pagination.pageKeySize
-      this.queryKeyData.fDicType = _row.fDicType
-      this.fDicKeyname = _row.fDicType
-      this.fDicKeyRow = _row
-      this.$http.post(this.API.getKeyDicPage, this.queryKeyData).then(response => {
-        this.queryKeyResult = response.data.data.pag
-        this.pagination.Keytotal = parseInt(response.data.data.total)
+      this.queryKeyData.dicType = _row.dicType
+      this.dicKeyname = _row.dicType
+      this.dicKeyRow = _row
+      debugger
+      queryKeyList(this.queryKeyData).then(response => {
+        this.queryKeyResult = response.data.pag
+        this.pagination.Keytotal = parseInt(response.data.total)
         this.listKeyLoading = false
         _row.getKeyLoading = false
       }).catch((response) => {
@@ -313,25 +314,25 @@ export default {
     // 当前page
     KyeleCurrentChange(num) {
       this.pagination.pageKeyNum = this.queryData.pageKeyNum = num
-      this.getKeyListData(this.fDicKeyRow)
+      this.getKeyListData(this.dicKeyRow)
     },
     // pageSize
     KyeleSizeChange(num) {
       this.pagination.pageKeySize = this.queryData.pageKeySize = num
-      this.getKeyListData(this.fDicKeyRow)
+      this.getKeyListData(this.dicKeyRow)
     },
     // 显示新增代码界面
     handleAddEdit() {
       this.currentFormDataIndex = -1
       this.formData = {
-        fId: '',
-        fDicType: '',
-        fDicTypeName: '',
-        fDicKey: '',
-        fDicValue: '',
-        fDicRemark: '',
-        fDicIndex: '',
-        fValidaStatus: '1'
+        id: '',
+        dicType: '',
+        dicTypeName: '',
+        dicKey: '',
+        dicValue: '',
+        dicRemark: '',
+        dicIndex: '',
+        isEffective: '1'
       }
       this.addEditFormVisible = true
       this.$refs.formData.resetFields()
@@ -353,17 +354,17 @@ export default {
         const _url = this.currentFormDataIndex > -1 ? this.API.updateTVipDicPage : this.API.insertTVipDicPage
         const _data = this.formData
         const para = {
-          fId: _data.fId,
-          fDicType: _data.fDicType,
-          fDicTypeName: _data.fDicTypeName,
-          fDicKey: _data.fDicKey,
-          fDicValue: _data.fDicValue,
-          fDicIndex: _data.fDicIndex,
-          fDicRemark: _data.fDicRemark,
-          fValidaStatus: _data.fValidaStatus
+          id: _data.id,
+          dicType: _data.dicType,
+          dicTypeName: _data.dicTypeName,
+          dicKey: _data.dicKey,
+          dicValue: _data.dicValue,
+          dicIndex: _data.dicIndex,
+          dicRemark: _data.dicRemark,
+          isEffective: _data.isEffective
         }
         this.$http.post(_url, para).then((response) => {
-          const result = response.data.data
+          const result = response.data
           if (result > 0) {
             this.$refs['formData'].clearValidate()
             this.addEditSubmitLoading = false
@@ -468,7 +469,7 @@ export default {
       this.addKeyEditFormVisible = false
     },
     init() {
-      this.API = this.formatAPI()
+      //this.API = this.formatAPI()
       this.getListData()
     }
   }
