@@ -351,7 +351,7 @@ export default {
         if (!valid) return
         this.addEditSubmitLoading = true
         // NProgress.start()
-        const _url = this.currentFormDataIndex > -1 ? this.API.updateTVipDicPage : this.API.insertTVipDicPage
+        const _url = this.currentFormDataIndex > -1 ? '/DataDicController/updateDataDic' : '/DataDicController/insertDataDic'
         const _data = this.formData
         const para = {
           id: _data.id,
@@ -363,7 +363,7 @@ export default {
           dicRemark: _data.dicRemark,
           isEffective: _data.isEffective
         }
-        this.$http.post(_url, para).then((response) => {
+        insertDataDic(para,_url).then((response) => {
           const result = response.data
           if (result > 0) {
             this.$refs['formData'].clearValidate()

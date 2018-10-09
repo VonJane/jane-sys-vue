@@ -17,9 +17,9 @@ export function queryKeyList(query) {
   })
 }
 
-export function insertDataDic(data) {
+export function insertDataDic(data,url) {
   return request({
-    url: '/DataDicController/insertDataDic',
+    url: url,
     method: 'post',
     params: data
   })
