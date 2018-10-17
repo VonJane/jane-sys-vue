@@ -88,18 +88,18 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/nested',
+    path: '/picture',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/picture/index',
+    name: 'Picture',
     meta: {
-      title: 'nested',
+      title: '图片管理',
       icon: 'nested'
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
+        path: 'uploadPicture',
+        component: () => import('@/views/picture/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: 'menu1' }
       },
