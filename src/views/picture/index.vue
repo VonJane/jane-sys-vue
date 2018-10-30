@@ -88,7 +88,7 @@ export default {
     }
   },
   mounted() {
-    const element = document.getElementById(this.id)
+    const element = document.getElementById('DropzoneElementId')
     const vm = this
     this.dropzone = new Dropzone(element, {
       clickable: this.clickable,

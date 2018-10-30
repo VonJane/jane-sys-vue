@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/springboot-mybatis': {
-        target: 'http://localhost:8080/',
+        target: 'http://localhost:8080/',//39.105.10.69:5263
         changeOrigin: true,
         pathRewrite: {
           '^/springboot-mybatis': ''
@@ -65,7 +65,7 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

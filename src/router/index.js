@@ -48,7 +48,7 @@ export const constantRouterMap = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: '用户管理', icon: 'table' }
+        meta: { title: '用户管理', icon: 'user' }
       },
       {
         path: 'tree',
@@ -70,19 +70,19 @@ export const constantRouterMap = [
     component: Layout,
     meta: {
       title: '文章管理',
-      icon: 'form'
+      icon: 'article'
     },
     children: [
       {
         path: 'create',
         name: '创建文章',
         component: () => import('@/views/article/create'),
-        meta: {title:'创建文章',icon:'form'  }
+        meta: {title:'创建文章',icon:'article_add'  }
       },{
         path: 'list',
         name: '文章列表',
         component: () => import('@/views/article/list'),
-        meta: {title:'文章列表',icon:'form'  }
+        meta: {title:'文章列表',icon:'article_list'  }
       }
     ]
   },
@@ -94,19 +94,19 @@ export const constantRouterMap = [
     name: 'Picture',
     meta: {
       title: '图片管理',
-      icon: 'nested'
+      icon: 'picture'
     },
     children: [
       {
         path: 'uploadPicture',
         component: () => import('@/views/picture/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'menu1' }
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        meta: { title: '图片上传', icon:'picture_upload' }
+      },{
+        path: 'uploadPicture',
+        component: () => import('@/views/picture/index'), // Parent router-view
+        name: 'Menu1',
+        meta: { title: '轮播图管理', icon:'picture' }
       }
     ]
   },
