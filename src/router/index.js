@@ -66,8 +66,10 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/form',
+    path: '/article',
     component: Layout,
+    redirect: '/article/create',
+    name: '文章管理',
     meta: {
       title: '文章管理',
       icon: 'article'
@@ -83,7 +85,14 @@ export const constantRouterMap = [
         name: '文章列表',
         component: () => import('@/views/article/list'),
         meta: {title:'文章列表',icon:'article_list'  }
-      }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/article/edit'),
+        name: 'EditArticle',
+        meta: { title: 'editArticle', noCache: true },
+        hidden: true
+      },
     ]
   },
 
@@ -100,10 +109,10 @@ export const constantRouterMap = [
       {
         path: 'uploadPicture',
         component: () => import('@/views/picture/index'), // Parent router-view
-        name: 'Menu1',
+        name: 'pictureUpload',
         meta: { title: '图片上传', icon:'picture_upload' }
       },{
-        path: 'uploadPicture',
+        path: 'pictureManage',
         component: () => import('@/views/picture/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: '轮播图管理', icon:'picture' }
@@ -122,7 +131,7 @@ export const constantRouterMap = [
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  //{ path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({

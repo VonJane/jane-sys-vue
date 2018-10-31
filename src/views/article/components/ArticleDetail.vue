@@ -76,7 +76,7 @@ import Upload from '@/components/Upload/singleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
-import { fetchArticle,createArticle } from '@/api/article'
+import { updateArticle,fetchArticle,createArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
@@ -159,10 +159,14 @@ export default {
   methods: {
     fetchData(id) {
       fetchArticle(id).then(response => {
+        debugger
         this.postForm = response.data
         // Just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
+        this.postForm.display_time = `${this.postForm.createDate}`
+        this.postForm.content = `${this.postForm.articleContent}`
+        this.postForm.createBy = `${this.postForm.author}`
+        this.postForm.title = `${this.postForm.articleTitle}`
+        this.postForm.content_short = `${this.postForm.articleContentShort}`
       }).catch(err => {
         console.log(err)
       })
@@ -174,31 +178,60 @@ export default {
         if (valid) {
           this.loading = true
           let _data = this.postForm
-          let param = {
-            articleTitle : _data.title,
-            articleContentShort:_data.content_short,
-            articleContent:_data.content,
-            articleSourceUri:_data.source_uri,
-            hascomment:_data.comment_disabled,
-            importance:_data.importance,
-            createBy:_data.createBy,
-            createDate:_data.display_time
-          }
-          debugger
-          createArticle(param).then(response => {
-            this.$notify({
-              title: '成功',
-              message: '发布文章成功',
-              type: 'success',
-              duration: 2000
+          let param ;
+          if (this.isEdit) {
+            param = {
+              id:_data.id,
+              articleTitle : _data.title,
+              articleContentShort:_data.content_short,
+              articleContent:_data.content,
+              articleSourceUri:_data.source_uri,
+              hascomment:_data.comment_disabled,
+              importance:_data.importance,
+              updateDate:_data.display_time
+            }
+            updateArticle(param).then(response => {
+              this.$notify({
+                title: '成功',
+                message: '发布文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.postForm.status = 'published'
+              this.loading = false
+            }).catch((response) => {
+              console.error(response)
+              this.loading = false
+              this.$message.error('操作失败')
             })
-            this.postForm.status = 'published'
-            this.loading = false
-          }).catch((response) => {
-            console.error(response)
-             this.loading = false
-            this.$message.error('操作失败')
-          })
+          } else {
+            param = {
+              articleTitle : _data.title,
+              articleContentShort:_data.content_short,
+              articleContent:_data.content,
+              articleSourceUri:_data.source_uri,
+              hascomment:_data.comment_disabled,
+              importance:_data.importance,
+              createBy:_data.createBy,
+              createDate:_data.display_time
+            }
+            createArticle(param).then(response => {
+              this.$notify({
+                title: '成功',
+                message: '发布文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.postForm.status = 'published'
+              this.loading = false
+            }).catch((response) => {
+              console.error(response)
+              this.loading = false
+              this.$message.error('操作失败')
+            })
+          }
+
+
 
         } else {
           console.log('error submit!!')
@@ -223,7 +256,6 @@ export default {
       this.postForm.status = 'draft'
     },
     getRemoteUserList(query) {
-      debugger
       userSearch(query).then(response => {
         debugger
         if (!response.success) return

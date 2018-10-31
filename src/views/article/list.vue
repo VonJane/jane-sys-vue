@@ -16,7 +16,7 @@
 
       <el-table-column width="120px" align="center" label="Author">
         <template slot-scope="scope">
-          <span>{{ scope.row.createBy }}</span>
+          <span>{{ scope.row.author }}</span>
         </template>
       </el-table-column>
 
@@ -24,15 +24,14 @@
         <template slot-scope="scope">
           <!--<svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon"/>-->
           <el-rate
-            v-model="scope.row.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+            v-model="scope.row.importance" :low-threshold="1" :high-threshold="3" :disabled=true :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
           </el-rate>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="Status" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.iseffective | statusFilter">{{ scope.row.iseffective }}</el-tag>
+          <el-tag :type="scope.row.articleStatus | statusFilter">{{ scope.row.articleStatus }}</el-tag>
         </template>
       </el-table-column>
 
@@ -47,7 +46,7 @@
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
-          <router-link :to="'/example/edit/'+scope.row.id">
+          <router-link :to="'/article/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
           </router-link>
         </template>
@@ -77,9 +76,9 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        0: 'success',
+        '有效': 'success',
         draft: 'info',
-        1: 'danger'
+        '无效': 'danger'
       }
       return statusMap[status]
     }
@@ -102,7 +101,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        debugger
+
         this.list = response.data.pag
         this.total = parseInt(response.data.total)
         this.listLoading = false
