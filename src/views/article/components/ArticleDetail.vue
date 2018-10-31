@@ -199,6 +199,9 @@ export default {
               })
               this.postForm.status = 'published'
               this.loading = false
+              this.$router.push({
+                name: 'ArticleList'
+              })
             }).catch((response) => {
               console.error(response)
               this.loading = false
@@ -224,6 +227,9 @@ export default {
               })
               this.postForm.status = 'published'
               this.loading = false
+              this.$router.push({
+                name: 'ArticleList'
+              })
             }).catch((response) => {
               console.error(response)
               this.loading = false
