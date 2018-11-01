@@ -87,7 +87,7 @@ export const constantRouterMap = [
         meta: {title:'文章列表',icon:'article_list'  }
       },
       {
-        path: 'EditArticle',
+        path: 'EditArticle/:id(\\d+)',
         component: () => import('@/views/article/edit'),
         name: 'EditArticle',
         meta: { title: 'editArticle', noCache: true },
