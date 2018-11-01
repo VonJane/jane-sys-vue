@@ -7,16 +7,16 @@
         <!-- 模糊查询 -->
         <el-form-item>
           <el-input
-            v-model="queryData.fUserName"
+            v-model="queryData.jUserName"
             placeholder="请输入用户姓名"
             clearable
             @keyup.enter.native="getListData"
           />
         </el-form-item>
         <el-form-item>
-          <el-select v-model="queryData.fValidaStatus" placeholder="请选择" clearable>
+          <el-select v-model="queryData.jValidaStatus" placeholder="请选择" clearable>
             <el-option
-              v-for="item in fValidaStatu"
+              v-for="item in jValidaStatu"
               :key="item.value"
               :label="item.label"
               :value="item.value"/>
@@ -37,17 +37,17 @@
       <el-table v-loading="listLoading" :data="queryResult" border highlight-current-row style="width: 100%">
         <el-table-column prop="jUserName" label="姓名" />
         <el-table-column prop="jUserMobile" label="电话" />
-        <el-table-column prop="jUserSex" label="性别" />
+        <el-table-column prop="jUserGenderCn" label="性别" />
         <el-table-column prop="jUserAccount" label="账号" />
-        <el-table-column :formatter="transcode2" prop="jRolePower" label="角色分配" />
-        <el-table-column prop="jValidaStatus" label="状态" width="100"/>
+        <!--<el-table-column :formatter="transcode2" prop="jRolePower" label="角色分配" />-->
+        <el-table-column prop="jValidaStatusCn" label="状态" width="100"/>
         <el-table-column label="操作" fixed="right" width="360">
           <template slot-scope="scope">
             <!--<el-button v-if="queryResult[scope.$index].fValidStatus == 0" size="small" @click="fValidStatus(scope.$index)">启用</el-button>-->
             <el-button v-if="scope.row.jValidaStatus == 0" size="small" @click="handleDelete(scope.$index, scope.row)" >启用</el-button>
             <el-button v-else size="small" @click="handleDelete(scope.$index, scope.row)" >禁用</el-button>
             <el-button :loading="scope.row.treeDialogLoading" size="small" @click="handleAddEdit(scope.$index, scope.row)" >编辑</el-button>
-            <el-button :loading="scope.row.roleLoading" size="small" @click="roleSet(scope.$index, scope.row)">分配角色</el-button>
+            <!--<el-button :loading="scope.row.roleLoading" size="small" @click="roleSet(scope.$index, scope.row)">分配角色</el-button>-->
             <el-button size="small" @click="handleReset(scope.$index, scope.row)">重置密码</el-button>
           </template>
         </el-table-column>
@@ -61,23 +61,23 @@
       <!--新增界面-->
       <el-dialog :title="addEditTitle" :visible.sync="addEditFormVisible" :close-on-click-modal="true" :before-close="addEditFormOnClose" width="52%">
         <el-form ref="formData" :inline="true" :label-position="leftForm" :model="formData" :rules="rules" label-width="90px" >
-          <el-form-item label="姓名" prop="fUserName">
+          <el-form-item label="姓名" prop="jUserName">
             <el-input v-model="formData.jUserName" class="fix_width" auto-complete="off" maxlength="100" placeholder="请输入姓名" />
           </el-form-item>
-          <el-form-item label="电话" prop="fUserMobile">
+          <el-form-item label="电话" prop="jUserMobile">
             <el-input v-model="formData.jUserMobile" class="fix_width" auto-complete="off" maxlength="20" placeholder="请输入电话号码" />
           </el-form-item>
-          <el-form-item label="账号" prop="fUserAccount">
+          <el-form-item label="账号" prop="jUserAccount">
             <el-input v-model="formData.jUserAccount" class="fix_width" auto-complete="off" maxlength="100" placeholder="请输入账号" />
           </el-form-item>
           <el-form-item v-if="currentFormDataIndex == -1" label="密码" prop="fUserPwd">
             <el-input v-model="formData.jUserPwd" class="fix_width" auto-complete="off" placeholder="请输入密码" maxlength="200" />
           </el-form-item>
           <span v-else/>
-          <el-form-item label="性别" prop="fUserSex">
+          <el-form-item label="性别" prop="jUserGender">
             <el-select v-model="formData.jUserGender" class="fix_width" placeholder="请选择" >
               <el-option
-                v-for="item in fUserSex"
+                v-for="item in jUserGender"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"/>
@@ -105,8 +105,8 @@
       <!-- 重置密码 -->
       <el-dialog :visible.sync="resetPwd" :close-on-click-modal="true" :before-close="handleCloseReset" title="重置密码" width="30%">
         <el-form ref="formData" :model="formData" :rules="rules" label-width="80px" style="margin-top:20px;width: 87%">
-          <el-form-item label="新密码" prop="fUserPwd">
-            <el-input v-model="formData.fUserPwd" placeholder="请输入密码" auto-complete="off"/>
+          <el-form-item label="新密码" prop="jUserPwd">
+            <el-input v-model="formData.jUserPwd" placeholder="请输入密码" auto-complete="off"/>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -114,20 +114,20 @@
           <el-button :loading="addEditSubmitLoading" type="primary" @click.native="resetPass">提交</el-button>
         </div>
       </el-dialog>
-      <!-- 角色分配Dialog -->
+      <!-- 角色分配Dialog
       <el-dialog :visible.sync="dialogFormVisible" :before-close="handleCloseRole" title="角色分配" style="text-align: center;">
         <el-transfer :titles="['角色列表', '当前角色']" v-model="fRoleId" :data="data" style="text-align: left; display: inline-block"/>
         <div slot="footer" class="dialog-footer">
           <el-button @click.native="handleCloseRole">取 消</el-button>
           <el-button type="primary" @click.native="resetUserRoles">提 交</el-button>
         </div>
-      </el-dialog>
+      </el-dialog>-->
     </section>
   </div>
 </template>
 
 <script>
-import { getUserPages, setUser } from '@/api/JSysUser'
+import { getUserPages, setUser,updateUser } from '@/api/JSysUser'
 export default {
   data() {
     var cheakMobile = (rule, value, callback) => {
@@ -159,27 +159,27 @@ export default {
     }
     return {
       data: [],
-      fRoleId: [],
-      fUserName: '',
-      fUserId: Number,
+      jRoleId: [],
+      jUserName: '',
+      jUserId: Number,
       leftForm: 'right',
       rules: {
-        fUserName: [
+        jUserName: [
           { required: true, message: '姓名不能为空' }
         ],
-        fUserSex: [
+        jUserSex: [
           { required: true, message: '性别不能为空' }
         ],
-        fValidaStatus: [
+        jValidaStatus: [
           { required: true, message: '状态不能为空' }
         ],
-        fUserAccount: [
+        jUserAccount: [
           { validator: cheakAccount, required: true, trigger: 'blur' }
         ],
-        fUserPwd: [
+        jUserPwd: [
           { validator: cheakPws, required: true, trigger: 'blur' }
         ],
-        fUserMobile: [
+        jUserMobile: [
           { validator: cheakMobile, required: true, trigger: 'blur' }
         ]
       },
@@ -276,12 +276,12 @@ export default {
     //   return allRoles
     // },
     transcode2(_row2) {
-      switch (_row2.fRolePower) {
-        case 0:
-          return '未分配'
-        default:
-          return '已分配'
-      }
+      // switch (_row2.fRolePower) {
+      //   case 0:
+      //     return '未分配'
+      //   default:
+      //     return '已分配'
+      // }
     },
     formatAPI(_obj = {}) {
       for (const k of Object.keys(this.API)) {
@@ -304,11 +304,11 @@ export default {
       this.listLoading = true
       this.queryData.pageNum = this.pagination.pageNum
       this.queryData.pageSize = this.pagination.pageSize
-      debugger
       getUserPages(this.queryData).then(response => {
         this.queryResult = response.data.pag.map(item => {
-          item.fUserSex = String(item.fUserSex)
-          item.fValidaStatus = String(item.fValidaStatus)
+          debugger
+          item.jUserGenderCn = String(item.jUserGenderCn)
+          item.jValidaStatusCn = String(item.jValidaStatusCn)
           item.treeDialogLoading = false // 编辑loading定义
           item.roleLoading = false // 角色分配loding定义
           return item
@@ -323,14 +323,14 @@ export default {
     },
     //  禁用
     handleDelete(_index, _val) {
-      console.log('--------' + _val.fValidaStatus)
-      if (_val.fValidaStatus > 0) {
+      console.log('--------' + _val.jId)
+      if (_val.jValidaStatus > 0) {
         this.$confirm('确认禁用吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.updateVipValidStatus(_val.fId, _val.fValidaStatus, _index)
+          this.updateVipValidStatus(_val.jId, _val.jValidaStatus, _index)
         }).catch(() => {
           // return
         })
@@ -340,17 +340,18 @@ export default {
           cancelButtonText: '取消',
           type: ''
         }).then(() => {
-          this.updateVipValidStatus(_val.fId, _val.fValidaStatus, _index)
+          this.updateVipValidStatus(_val.jId, _val.jValidaStatus, _index)
         }).catch(() => {
           // return
         })
       }
     },
     //  列表启用/禁用 处理请求结果
-    updateVipValidStatus(fId, val, _index) {
+    updateVipValidStatus(jId, val, _index) {
       const _val = Number(val) === 1 ? 0 : 1
       const _message = Number(val) === 1 ? '已禁用' : '已启用'
-      this.$http.get(this.API.updateTNlmSysUser, { params: { fId: fId, fValidaStatus: _val }}).then(response => {
+      debugger
+      updateUser( { jId: jId, jValidaStatus: _val }).then(response => {
         this.$message.info(_message)
         this.getListData()
       }).catch((response) => {
@@ -409,8 +410,8 @@ export default {
           // NProgress.start()
           const _data = this.formData
           const param = {
-            fId: _data.fId,
-            fUserPwd: _data.fUserPwd
+            jId: _data.jId,
+            jUserPwd: _data.jUserPwd
           }
           this.$http.post(this.API.updateTNlmSysUser, param).then((response) => {
             const result = response.data.data
@@ -434,13 +435,13 @@ export default {
     // 角色分配页面
     roleSet(_index, _val) {
       _val.roleLoading = true
-      this.fUserId = _val.fId
-      this.$http.post(this.API.getUserRole, { fUserId: _val.fId }).then((response) => {
+      this.jUserId = _val.jId
+      this.$http.post(this.API.getUserRole, { jUserId: _val.jId }).then((response) => {
         _val.roleLoading = false
         const result = response.data.data
         for (let i = 0; i < result.length; i++) {
-          if (result[i].fValidaStatus === 1) {
-            this.$set(this.fRoleId, i, result[i].fRoleId)
+          if (result[i].jValidaStatus === 1) {
+            this.$set(this.jRoleId, i, result[i].jRoleId)
           }
         }
         this.dialogFormVisible = true
@@ -453,12 +454,12 @@ export default {
     resetUserRoles() {
       let _data
       debugger
-      if (this.fRoleId !== null) {
-        _data = this.fRoleId
+      if (this.jRoleId !== null) {
+        _data = this.jRoleId
       }
       let closeRoleStatu = 0
       this.$confirm('确认提交吗？', '提示', {}).then(() => {
-        this.$http.post(this.API.cancelRoleStatus, { fUserId: this.fUserId }).then((response) => {
+        this.$http.post(this.API.cancelRoleStatus, { jUserId: this.jUserId }).then((response) => {
           closeRoleStatu = response.data.data
           console.log('closeRoleStatus' + closeRoleStatu)
         }).catch((response) => {
@@ -470,7 +471,7 @@ export default {
           for (let i = 0; i < _data.length; i++) {
             console.log('此时_data的长度为' + _data.length)
             console.log('此时_data为' + _data)
-            this.$http.post(this.API.updateUserRole, { fRoleId: _data[i], fUserId: this.fUserId }).then((response) => {
+            this.$http.post(this.API.updateUserRole, { jRoleId: _data[i], jUserId: this.jUserId }).then((response) => {
               // let result = response.data.data
               if (i === _data.length - 1) {
                 this.handleCloseRole()
@@ -542,8 +543,8 @@ export default {
       this.getListData()
     },
     handleCloseRole() {
-      this.fRoleId = []
-      this.fUserId = 0
+      this.jRoleId = []
+      this.jUserId = 0
       this.dialogFormVisible = false
       this.getListData()
     },

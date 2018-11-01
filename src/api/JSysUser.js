@@ -26,6 +26,6 @@ export function updateUser(data) {
   return request({
     url: '/UserController/updateJSysUser',
     method: 'post',
-    params:  data.params
+    params:  data
   })
 }
