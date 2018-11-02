@@ -396,11 +396,11 @@ export default {
         const _url = this.API.updateKeyDicPage
         const _data = this.formKeyData
         const para = {
-          fId: _data.fId,
-          fDicKey: _data.fDicKey,
-          fDicValue: _data.fDicValue,
-          fDicRemark: _data.fDicRemark,
-          fDicIndex: _data.fDicIndex
+          id: _data.id,
+          dicKey: _data.dicKey,
+          dicValue: _data.dicValue,
+          dicRemark: _data.dicRemark,
+          dicIndex: _data.dicIndex
         }
         this.$http.post(_url, para).then((response) => {
           const result = response.data.data
@@ -425,7 +425,7 @@ export default {
       this.$confirm('确认刪除吗？', '提示', {}).then(() => {
         // NProgress.start()
         const _url = this.API.deleteTVipDicPage
-        this.$http.post(_url, { fId: data.fId }).then((response) => {
+        this.$http.post(_url, { id: data.id }).then((response) => {
           const result = response.data.data
           if (result > 0) {
             this.$message({ message: '操作成功', type: 'success', duration: 1500 })
@@ -441,7 +441,7 @@ export default {
     },
     // 禁用启用设置
     setfValidaStatus(data, btnStatus) {
-      this.updateStatusData.fId = data.fId
+      this.updateStatusData.id = data.id
       this.updateStatusData.fValidaStatus = btnStatus
       // NProgress.start()
       const _url = this.API.updateDicStatusPage
