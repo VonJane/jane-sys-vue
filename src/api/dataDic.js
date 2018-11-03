@@ -24,3 +24,12 @@ export function insertDataDic(data,url) {
     params: data
   })
 }
+
+export function deleteDataDic(data,url) {
+  debugger
+  return request({
+    url: url,
+    method: 'post',
+    params: data
+  })
+}

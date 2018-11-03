@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { queryList,queryKeyList,insertDataDic } from '@/api/dataDic'
+import { queryList,queryKeyList,insertDataDic,deleteDataDic } from '@/api/dataDic'
 export default {
   name: 'SystemManageDicInfo',
   data() {
@@ -393,7 +393,7 @@ export default {
         if (!valid) return
         this.addKeyEditSubmitLoading = true
         // NProgress.start()
-        const _url = this.API.updateKeyDicPage
+        const _url = "/DataDicController/updateDataDic"
         const _data = this.formKeyData
         const para = {
           id: _data.id,
@@ -402,8 +402,9 @@ export default {
           dicRemark: _data.dicRemark,
           dicIndex: _data.dicIndex
         }
-        this.$http.post(_url, para).then((response) => {
-          const result = response.data.data
+        insertDataDic(para, _url).then((response) => {
+          debugger
+          const result = response.data
           if (result > 0) {
             this.addKeyEditSubmitLoading = false
             this.addKeyEditFormOnClose()
@@ -424,9 +425,9 @@ export default {
     delDic(data) {
       this.$confirm('确认刪除吗？', '提示', {}).then(() => {
         // NProgress.start()
-        const _url = this.API.deleteTVipDicPage
-        this.$http.post(_url, { id: data.id }).then((response) => {
-          const result = response.data.data
+        const _url = "/DataDicController/deleteDataDic"
+        deleteDataDic({id:data.id},_url).then((response) => {
+          const result = response.data
           if (result > 0) {
             this.$message({ message: '操作成功', type: 'success', duration: 1500 })
             this.getListData()
@@ -440,26 +441,26 @@ export default {
       })
     },
     // 禁用启用设置
-    setfValidaStatus(data, btnStatus) {
-      this.updateStatusData.id = data.id
-      this.updateStatusData.fValidaStatus = btnStatus
-      // NProgress.start()
-      const _url = this.API.updateDicStatusPage
-      const mess = this.updateStatusData.fValidaStatus === 0 ? '确认禁用吗？' : '确认启用吗？'
-      this.$confirm(mess, '提示', {}).then(() => {
-        this.$http.post(_url, this.updateStatusData).then((response) => {
-          const result = response.data.data
-          if (result > 0) {
-            this.$message({ message: '操作成功', type: 'success', duration: 1500 })
-            this.getKeyListData(data)
-          } else {
-            this.$message.error('操作失败')
-          }
-        }).catch((response) => {
-          this.$message.error('操作失败')
-        })
-      })
-    },
+    // setfValidaStatus(data, btnStatus) {
+    //   this.updateStatusData.id = data.id
+    //   this.updateStatusData.fValidaStatus = btnStatus
+    //   // NProgress.start()
+    //   const _url = this.API.updateDicStatusPage
+    //   const mess = this.updateStatusData.fValidaStatus === 0 ? '确认禁用吗？' : '确认启用吗？'
+    //   this.$confirm(mess, '提示', {}).then(() => {
+    //     this.$http.post(_url, this.updateStatusData).then((response) => {
+    //       const result = response.data.data
+    //       if (result > 0) {
+    //         this.$message({ message: '操作成功', type: 'success', duration: 1500 })
+    //         this.getKeyListData(data)
+    //       } else {
+    //         this.$message.error('操作失败')
+    //       }
+    //     }).catch((response) => {
+    //       this.$message.error('操作失败')
+    //     })
+    //   })
+    // },
     // 关闭新增编辑弹窗
     addEditFormOnClose() {
       this.addEditFormVisible = false
