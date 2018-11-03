@@ -5,17 +5,14 @@ export function getUserPages(data) {
   return request({
     url: '/UserController/getUserPages',
     method: 'post',
-    params: {
-      "pageNum":data.pageNum,
-      "pageSize":data.pageSize
-    }
+    params: data
   })
 }
 
-export function setUser(data) {
+export function setUser(data,url) {
   debugger
   return request({
-    url: '/UserController/insertJSysUser',
+    url: url,
     method: 'post',
     params:  data
   })

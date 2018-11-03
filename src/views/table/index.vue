@@ -52,8 +52,8 @@
         <el-table-column label="操作" fixed="right" width="360">
           <template slot-scope="scope">
             <!--<el-button v-if="queryResult[scope.$index].fValidStatus == 0" size="small" @click="fValidStatus(scope.$index)">启用</el-button>-->
-            <el-button v-if="scope.row.jValidaStatus == 0" size="small" @click="handleDelete(scope.$index, scope.row)" >启用</el-button>
-            <el-button v-else size="small" @click="handleDelete(scope.$index, scope.row)" >禁用</el-button>
+            <el-button v-if="scope.row.jValidaStatus == 0" size="small" @click="handleDelete(scope.$index, scope.row)" >禁用</el-button>
+            <el-button v-else size="small" @click="handleDelete(scope.$index, scope.row)" >启用</el-button>
             <el-button :loading="scope.row.treeDialogLoading" size="small" @click="handleAddEdit(scope.$index, scope.row)" >编辑</el-button>
             <!--<el-button :loading="scope.row.roleLoading" size="small" @click="roleSet(scope.$index, scope.row)">分配角色</el-button>-->
             <el-button size="small" @click="handleReset(scope.$index, scope.row)">重置密码</el-button>
@@ -140,9 +140,9 @@
     filters: {
       statusFilter(status) {
         const statusMap = {
-          '有效': 'success',
+          '启用': 'success',
           draft: 'info',
-          '无效': 'danger'
+          '禁用': 'danger'
         }
         return statusMap[status]
       },
@@ -213,20 +213,20 @@
           value: '',
           label: '请选择'
         }, {
-          value: '1',
+          value: '0',
           label: '男'
         }, {
-          value: '0',
+          value: '1',
           label: '女'
         }],
         jValidaStatu: [{
           value: '',
           label: '请选择'
         }, {
-          value: '0',
+          value: '1',
           label: '禁用'
         }, {
-          value: '1',
+          value: '0',
           label: '启用'
         }],
         // API: {
@@ -351,20 +351,20 @@
       handleDelete(_index, _val) {
         console.log('--------' + _val.jId)
         if (_val.jValidaStatus > 0) {
-          this.$confirm('确认禁用吗？', '提示', {
+          this.$confirm('确认启用吗？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: 'warning'
+            type: ''
           }).then(() => {
             this.updateVipValidStatus(_val.jId, _val.jValidaStatus, _index)
           }).catch(() => {
             // return
           })
         } else {
-          this.$confirm('确认启用吗？', '提示', {
+          this.$confirm('确认禁用吗？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: ''
+            type: 'warning'
           }).then(() => {
             this.updateVipValidStatus(_val.jId, _val.jValidaStatus, _index)
           }).catch(() => {
@@ -375,10 +375,14 @@
       //  列表启用/禁用 处理请求结果
       updateVipValidStatus(jId, val, _index) {
         const _val = Number(val) === 1 ? 0 : 1
-        const _message = Number(val) === 1 ? '已禁用' : '已启用'
+        const _message = Number(val) === 1 ? '已启用' : '已禁用'
         debugger
         updateUser( { jId: jId, jValidaStatus: _val }).then(response => {
-          this.$message.info(_message)
+          this.$notify({
+            title: _message,
+            message: Number(val) === 1 ? '此用户已被启用！' : '此用户已被禁用！',
+            type: Number(val) === 1 ? 'success' : 'error'
+          });
           this.getListData()
         }).catch((response) => {
           console.error(response)
@@ -522,7 +526,7 @@
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.addEditSubmitLoading = true
             // NProgress.start()
-            const _url = this.currentFormDataIndex > -1 ? this.API.updateTNlmSysUser : this.API.insertTNlmSysUser
+            const _url = this.currentFormDataIndex > -1 ? '/UserController/updateJSysUser' : '/UserController/insertJSysUser'
             const _data = this.formData
             const param = {
               jId: _data.jId,
@@ -534,7 +538,7 @@
               jUserPwd: _data.jUserPwd,
               jValidaStatus: _data.jValidaStatus
             }
-            setUser(param).then((response) => {
+            setUser(param,_url).then((response) => {
               const result = response.data
               if (result > 0) {
                 this.addEditSubmitLoading = false
