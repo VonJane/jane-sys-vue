@@ -5,7 +5,7 @@
       <sticky :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
         <PlatformDropdown v-model="postForm.platforms" />
-        <SourceUrlDropdown v-model="postForm.source_uri" />
+        <SourceUrlDropdown v-model="postForm.article_source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
@@ -86,12 +86,12 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
+  article_source_uri: '', // 文章外链
   image_uri: '', // 文章图片
   display_time: undefined, // 前台展示时间
   id: undefined,
   platforms: ['a-platform'],
-  comment_disabled: 1,
+  hasComment: 0,
   importance: 0
 }
 
@@ -139,7 +139,7 @@ export default {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
         content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        article_source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       }
     }
   },
@@ -185,7 +185,7 @@ export default {
               articleTitle : _data.title,
               articleContentShort:_data.content_short,
               articleContent:_data.content,
-              articleSourceUri:_data.source_uri,
+              articleSourceUri:_data.article_source_uri,
               hascomment:_data.comment_disabled,
               importance:_data.importance,
               updateDate:_data.display_time
@@ -212,7 +212,7 @@ export default {
               articleTitle : _data.title,
               articleContentShort:_data.content_short,
               articleContent:_data.content,
-              articleSourceUri:_data.source_uri,
+              articleSourceUri:_data.article_source_uri,
               hascomment:_data.comment_disabled,
               importance:_data.importance,
               createBy:_data.createBy,

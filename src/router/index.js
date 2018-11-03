@@ -38,15 +38,15 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    path: '/system',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/system/userManage',
     name: '系统管理',
     meta: { title: '系统管理', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: 'userManage',
+        name: 'userManage',
         component: () => import('@/views/table/index'),
         meta: { title: '用户管理', icon: 'user' }
       },
