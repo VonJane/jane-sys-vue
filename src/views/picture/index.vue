@@ -1,68 +1,36 @@
 <template>
-  <el-row>
-    <el-col :span="8" v-for="(o, index) in 5" :key="o" :offset="index > 0 ? 2 : 0">
-      <el-card :body-style="{ padding: '0px' }" shadow="hover">
-        <img src="fj.png" class="image">
-        <div style="padding: 14px;">
-          <span>好吃的汉堡</span>
-          <div class="bottom clearfix">
-
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="primary" class="button" @click="deletePicture(scope.$index, scope.row)">删除</el-button>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-  </el-row>
-
+  <div>
+  <el-upload
+    action="https://jsonplaceholder.typicode.com/posts/"
+    list-type="picture-card"
+    :on-preview="handlePictureCardPreview"
+    :on-remove="handleRemove">
+    <i class="el-icon-plus"></i>
+  </el-upload>
+  <el-dialog :visible.sync="dialogVisible">
+    <img width="100%" :src="dialogImageUrl" alt="">
+  </el-dialog>
+  </div>
 </template>
 <script>
   export default {
     data() {
       return {
-        currentDate: new Date()
+        dialogImageUrl: '',
+        dialogVisible: false
       };
     },
     methods: {
-      deletePicture(a,b){
-        alert(a)
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
       },
-      init() {
-        // this.API = this.formatAPI()
-        // this.data = this.getAllRole()
-        this.getListData()
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
       }
     }
   }
 </script>
 <style>
-  .time {
-    font-size: 13px;
-    color: #999;
-  }
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-
-    float: right;
-  }
-
-  .image {
-    width: 100%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-
-  .clearfix:after {
-    clear: both
-  }
 </style>
