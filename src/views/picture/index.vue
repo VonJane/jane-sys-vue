@@ -1,7 +1,4 @@
-/**
- * Created by 2018/8/11/011
- * Author: Admin
- */
+
 <!--//用于上传多张张图片-->
 <template>
   <div class="img">
