@@ -1,68 +1,70 @@
+/**
+ * Created by 2018/8/11/011
+ * Author: Admin
+ */
+<!--//用于上传多张张图片-->
 <template>
-  <el-row>
-    <el-col :span="8" v-for="(o, index) in 5" :key="o" :offset="index > 0 ? 2 : 0">
-      <el-card :body-style="{ padding: '0px' }" shadow="hover">
-        <img src="fj.png" class="image">
-        <div style="padding: 14px;">
-          <span>好吃的汉堡</span>
-          <div class="bottom clearfix">
+  <div class="img">
+   <img class="pre-img" :src="src" alt="">
+   <vue-core-image-upload :class="['pure-button','pure-button-primary','js-btn-crop']"
+                        :crop="false"
+                        text="上传图片" 
+                        inputOfFile="file" 
+                        url="http://localhost:8080/FileUploadController/upload" 
+                        extensions="png,gif,jpeg,jpg"
+                        @imageuploaded="imageuploaded"   
+                        @errorhandle="handleError">
+    </vue-core-image-upload>
 
-            <time class="time">{{ currentDate }}</time>
-            <el-button type="primary" class="button" @click="deletePicture(scope.$index, scope.row)">删除</el-button>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-  </el-row>
+    <el-upload
+  action="http://localhost:8080/FileUploadController/upload"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisible">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
 
+</div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        currentDate: new Date()
-      };
-    },
-    methods: {
-      deletePicture(a,b){
-        alert(a)
-      },
-      init() {
-        // this.API = this.formatAPI()
-        // this.data = this.getAllRole()
-        this.getListData()
-      }
-    }
-  }
+import VueCoreImageUpload from 'vue-core-image-upload'
+
+    export default {
+        components: {
+            'vue-core-image-upload': VueCoreImageUpload,
+        },
+        data() {
+            return {
+                dialogImageUrl: '',
+                dialogVisible: false,
+                src: './static/img/hospital1.jpg'  //默认的图片路径
+            }
+        },
+        methods: {  
+          imageuploaded(res) {     //图片上传成功后调用此方法，res为返回值为服务器存放图片的路径，再将图片路径赋值给src
+            console.log("文件上传成功！");
+            this.src=res;
+    
+          },
+         handleError(){           //图片上失败后调用此方法
+              console.log("文件上传失败！");
+          
+               this.$notify.error({
+                         title: '上传失败',
+                         message: '图片上传接口上传失败，可更改为自己的服务器接口'
+                   });
+         },
+          handleRemove(file, fileList) {
+           console.log(file, fileList);
+          },
+          handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+          }
+
+        }
+    };
 </script>
-<style>
-  .time {
-    font-size: 13px;
-    color: #999;
-  }
-
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-
-    float: right;
-  }
-
-  .image {
-    width: 100%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-
-  .clearfix:after {
-    clear: both
-  }
-</style>
