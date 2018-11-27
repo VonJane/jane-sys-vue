@@ -90,10 +90,10 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('Login', this.loginForm).then(() => {
-            debugger
+          this.$store.dispatch('Login', this.loginForm).then(response => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
+            resolve(response)
           }).catch((error) => {
             alert(JSON.stringify(error))
             this.loading = false

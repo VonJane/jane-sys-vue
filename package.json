@@ -13,7 +13,6 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    
     "axios": "0.18.0",
     "dropzone": "^5.5.1",
     "element-ui": "2.4.6",

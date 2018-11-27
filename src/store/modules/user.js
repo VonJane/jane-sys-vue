@@ -30,6 +30,8 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
+          sessionStorage.setItem("userId",response.data.user.jId)
+          sessionStorage.setItem("userName",response.data.user.jUserName)
           const data = response.data
           setToken("admin")
           commit('SET_TOKEN', data.user)
