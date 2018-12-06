@@ -1,20 +1,36 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎访问</div>
-    <div class="dashboard-text">HelloWorld</div>
+    <div class="dashboard-text">『{{yiyan.hitokoto}}』</div>
+    <div class="dashboard-text"><a @click="getYi">&nbsp;&nbsp;———— {{yiyan.from}}</a></div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { getYiYan } from '@/api/other'
 
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
+  data(){
+    return {
+      yiyan:{}
+    }
+  },
+  mounted(){
+    this.init()
+  },
+  methods:{
+    getYi() {
+      let app = this;
+      getYiYan().then(res=>{
+        app.yiyan = res
+      }).catch((res)=>{
+        console.log(res)
+      })
+    },
+    init(){
+      this.getYi()
+    }
   }
 }
 </script>
