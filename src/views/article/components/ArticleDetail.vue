@@ -4,7 +4,7 @@
 
       <sticky :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
-        <PlatformDropdown v-model="postForm.platforms" />
+        <!-- <PlatformDropdown v-model="postForm.platforms" /> -->
         <SourceUrlDropdown v-model="postForm.article_source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
         </el-button>
@@ -31,8 +31,13 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
+                  <!-- <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
                     <el-date-picker v-model="postForm.display_time" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"/>
+                  </el-form-item> -->
+                  <el-form-item label-width="80px" label="博客标签:" class="postInfo-container-item">
+                    <el-select v-model="postForm.article_category_id" :remote-method="getRemoteArticleCategoryList" filterable remote placeholder="搜索标签">
+                      <el-option v-for="(item,index) in articleCategoryListOptions" :key="item+index" :label="item.categoryName" :value="item.id"/>
+                    </el-select>
                   </el-form-item>
                 </el-col>
 
@@ -77,7 +82,7 @@ import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
 import { updateArticle,fetchArticle,createArticle } from '@/api/article'
-import { userSearch } from '@/api/remoteSearch'
+import { userSearch,articleCategorySearch } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
@@ -135,6 +140,7 @@ export default {
       postForm: Object.assign({}, defaultForm),
       loading: false,
       userListOptions: [],
+      articleCategoryListOptions:[],
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
@@ -266,6 +272,14 @@ export default {
         debugger
         if (!response.success) return
         this.userListOptions = response.data
+        // this.userListOptions = response.data.map(v => v.name)
+      })
+    },
+    getRemoteArticleCategoryList(query){
+      articleCategorySearch(query).then(response => {
+        debugger
+        if (!response.success) return
+        this.articleCategoryListOptions = response.data
         // this.userListOptions = response.data.map(v => v.name)
       })
     }

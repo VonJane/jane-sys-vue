@@ -7,3 +7,12 @@ export function userSearch(name) {
     params: { "jUserName":name }
   })
 }
+
+
+export function articleCategorySearch(name) {
+  return request({
+    url: '/UserController/getJSysUser',
+    method: 'get',
+    params: { "categoryName":name }
+  })
+}
