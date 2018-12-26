@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/springboot-mybatis': {
-        target: 'http://localhost:8080/',//39.105.10.69:5263
+        target: 'http://localhost:8080/',
         changeOrigin: true,
         pathRewrite: {
           '^/springboot-mybatis': ''

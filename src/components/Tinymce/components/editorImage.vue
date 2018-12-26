@@ -11,7 +11,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        action="/springboot-mybatis/FileUploadController/uploadFilesForArticle"
         list-type="picture-card">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
@@ -23,6 +23,7 @@
 
 <script>
 // import { getToken } from 'api/qiniu'
+import { upload } from '@/api/uploadFile'
 
 export default {
   name: 'EditorSlideUpload',
@@ -55,11 +56,12 @@ export default {
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
+      debugger
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].url = response.data
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }
@@ -76,6 +78,7 @@ export default {
       }
     },
     beforeUpload(file) {
+      debugger
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
@@ -88,6 +91,22 @@ export default {
         }
         resolve(true)
       })
+    },
+    myUpload(param) {
+      debugger
+      if (param.file) {
+        let formData = new FormData()
+        formData.append('file',param.file);
+        formData.append('userId',this.userId)
+        formData.append('userName',this.userName)
+        // 上传
+        upload(formData).then(response => {
+          this.$emit('AllUrls', this.fileList)
+        }).catch((response) => {
+          this.$message.error('上传图片失败！');
+          console.log(response)
+        })
+      }
     }
   }
 }
