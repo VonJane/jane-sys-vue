@@ -28,7 +28,7 @@ export function createArticle(data) {
   return request({
     url: '/ArticleController/createArticle',
     method: 'post',
-    params:data
+    data
   })
 }
 
@@ -36,6 +36,6 @@ export function updateArticle(data) {
   return request({
     url: '/ArticleController/updateArticle',
     method: 'post',
-    params:data
+    data
   })
 }
