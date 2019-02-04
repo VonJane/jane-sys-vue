@@ -56,7 +56,7 @@
     "semver": "5.6.0",
     "shelljs": "0.8.2",
     "svg-sprite-loader": "3.8.0",
-    "uglifyjs-webpack-plugin": "1.2.7",
+    "uglifyjs-webpack-plugin": "2.1.1",
     "url-loader": "1.0.1",
     "vue-loader": "15.3.0",
     "vue-style-loader": "4.1.2",
