@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import qs from 'qs'
 import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/singleImage3'
 import MDinput from '@/components/MDinput'
@@ -186,7 +187,7 @@ export default {
           let _data = this.postForm
           let param ;
           if (this.isEdit) {
-            param = {
+            param = qs.stringify({
               id:_data.id,
               articleTitle : _data.title,
               articleContentShort:_data.content_short,
@@ -195,7 +196,7 @@ export default {
               hascomment:_data.comment_disabled,
               importance:_data.importance,
               updateDate:_data.display_time
-            }
+            })
             updateArticle(param).then(response => {
               this.$notify({
                 title: '成功',
@@ -209,12 +210,13 @@ export default {
                 name: 'ArticleList'
               })
             }).catch((response) => {
-              console.error(response)
+
+              console.error('ERROR:  '+response)
               this.loading = false
               this.$message.error('操作失败')
             })
           } else {
-            param = {
+            param = qs.stringify({
               articleTitle : _data.title,
               articleContentShort:_data.content_short,
               articleContent:_data.content,
@@ -223,7 +225,8 @@ export default {
               importance:_data.importance,
               createBy:_data.createBy,
               createDate:_data.display_time
-            }
+            })
+            debugger
             createArticle(param).then(response => {
               this.$notify({
                 title: '成功',
