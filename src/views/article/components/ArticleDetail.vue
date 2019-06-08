@@ -172,6 +172,7 @@ export default {
         this.postForm.display_time = `${this.postForm.createDate}`
         this.postForm.content = `${this.postForm.articleContent}`
         this.postForm.createBy = `${this.postForm.author}`
+        this.postForm.article_category_id = `${this.postForm.articleCategoryId}`
         this.postForm.title = `${this.postForm.articleTitle}`
         this.postForm.content_short = `${this.postForm.articleContentShort}`
       }).catch(err => {
@@ -224,6 +225,7 @@ export default {
               hascomment:_data.comment_disabled,
               importance:_data.importance,
               createBy:_data.createBy,
+              articleCategoryId:_data.article_category_id,
               createDate:_data.display_time
             })
             debugger

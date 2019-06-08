@@ -11,7 +11,7 @@ export function userSearch(name) {
 
 export function articleCategorySearch(name) {
   return request({
-    url: '/UserController/getJSysUser',
+    url: '/ArticleCategoryController/queryArticleCategoryList',
     method: 'get',
     params: { "categoryName":name }
   })

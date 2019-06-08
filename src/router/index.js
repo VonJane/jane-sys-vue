@@ -125,7 +125,7 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
-        path: 'https://vonjane.github.io/',
+        path: 'https://janeblog.cn/',
         meta: { title: 'externalLink', icon: 'link' }
       }
     ]
